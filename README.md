@@ -1,50 +1,41 @@
 # Olivia's Nightmares
 
-Selamat datang di repositori resmi **Olivia's Nightmares**, sebuah proyek game horror yang dikembangkan menggunakan Unity Engine.
+![Unity Version](https://img.shields.io/badge/Unity-2022.3+-blue.svg)
+![Platform](https://img.shields.io/badge/Platform-PC-orange.svg)
+![Genre](https://img.shields.io/badge/Genre-Horror%20%7C%20Survival-red.svg)
 
-## 📌 Tentang Proyek
-Game ini menggunakan berbagai aset 3D eksternal yang diunduh secara online untuk menyusun lingkungan, karakter, dan mekanisme interaksi di dalam game. 
-
-Untuk menjaga ukuran repositori tetap ringan dan mematuhi hak cipta/lisensi aset, beberapa aset pihak ketiga tidak dimasukkan langsung ke dalam Git, melainkan harus diunduh secara manual oleh developer melalui daftar yang tersedia di [assets.md](assets.md).
-
----
-
-## 🛠️ Tutorial Memasukkan Assets ke Folder `assets/AssetsOnline`
-
-Karena proyek ini menggunakan aset eksternal, Anda perlu mengunduh aset tersebut terlebih dahulu dan memasukkannya ke dalam folder khusus agar proyek Unity dapat berjalan dengan benar (menghindari *missing prefab/model*).
-
-Ikuti langkah-langkah berikut:
-
-### Langkah 1: Buka Daftar Aset
-Buka file `assets.md` yang ada di repositori ini untuk melihat tautan unduhan resmi dari Sketchfab, CGTrader, dan Unity Asset Store.
-
-### Langkah 2: Unduh Aset Sesuai Format
-1. **Dari Sketchfab / CGTrader (Karakter, Kunci, Senter, Hantu):**
-   * Unduh dalam format yang didukung Unity (direkomendasikan **.FBX** atau **.OBJ** beserta teksturnya).
-   * Ekstrak file `.zip` hasil unduhan jika berbentuk arsip.
-2. **Dari Unity Asset Store (Furniture Packs):**
-   * Pastikan Anda sudah *Add to My Assets* menggunakan akun Unity Anda.
-
-### Langkah 3: Pindahkan ke Folder `AssetsOnline`
-1. Buka folder proyek Unity Anda lewat File Explorer atau langsung di dalam editor Unity.
-2. Cari atau buat folder dengan struktur berikut: `[Project-Root]/Assets/AssetsOnline/` (perhatikan kapitalisasi folder).
-3. **Untuk Aset 3D Manual (Sketchfab/CGTrader):** 
-   * Buat sub-folder baru di dalam `AssetsOnline` sesuai nama aset (contoh: `Assets/AssetsOnline/Kara_Character/` atau `Assets/AssetsOnline/Key/`).
-   * Masukkan file 3D (.fbx/.obj) dan folder `Textures` ke dalamnya.
-4. **Untuk Aset dari Unity Asset Store:**
-   * Buka proyek Unity Anda.
-   * Pergi ke menu **Window > Package Manager**.
-   * Ubah filter menjadi **My Assets**, cari aset furniture yang terdaftar, lalu klik **Download** dan **Import**.
-   * Pindahkan folder hasil import tersebut dari root `Assets/` ke dalam folder `Assets/AssetsOnline/` agar struktur proyek tetap rapi.
-
-### Langkah 4: Selesai & Verifikasi
-Buka proyek Unity Anda, tunggu proses *importing* selesai, dan pastikan tidak ada error terkait objek/material yang hilang pada Scene utama.
+**Olivia's Nightmares** adalah sebuah game bergenre *psychological horror-survival* yang dikembangkan menggunakan Unity Engine. Pemain akan dibawa masuk ke dalam manifestasi mimpi buruk seorang karakter bernama Olivia, di mana batasan antara realitas dan ilusi menjadi kabur.
 
 ---
 
-## 🚀 Kontribusi
-Jika Anda ingin berkontribusi pada pengembangan game ini:
-1. Fork repositori ini.
-2. Buat fitur baru Anda pada branch terpisah (`git checkout -b fitur-baru`).
-3. Lakukan Commit dan Push.
-4. Ajukan *Pull Request*.
+## 👁️ Sinopsis & Alur Cerita
+Olivia terjebak di dalam labirin ingatan dan ketakutan terbesarnya. Rumah yang dulunya hangat kini berubah menjadi tempat yang mencekam, dipenuhi oleh bayangan masa lalu dan entitas misterius yang terus memburunya. Dengan bermodalkan sebuah senter tua, Olivia harus mencari jalan keluar, mengumpulkan petunjuk, dan memecahkan teka-teki misterius sebelum kegelapan menelan jiwanya sepenuhnya.
+
+---
+
+## 🎮 Fitur Utama Game
+* **Atmospheric Horror Experience:** Desain lingkungan yang detail, minim pencahayaan, dan tata suara (*audio design*) yang imersif untuk membangun ketegangan yang konstan.
+* **Survival Mechanics:** Kelola baterai senter Anda dengan bijak. Kegelapan total berarti bahaya instan.
+* **Smart AI Enemy:** Entitas hantu yang memiliki kecerdasan buatan untuk berpatroli, mendengarkan suara, dan mengejar pemain secara dinamis.
+* **Interactive Puzzles:** Temukan kunci tersembunyi, pecahkan sandi, dan interaksi dengan furnitur kuno di sekitar rumah untuk membuka area baru.
+
+---
+
+## 🧭 Kontrol Permainan (PC)
+* **W, A, S, D** - Bergerak / Berjalan
+* **Mouse** - Mengarahkan Pandangan (Kamera)
+* **F** - Menyalakan / Mematikan Senter
+* **E** - Interaksi (Membuka Pintu, Mengambil Kunci / Item)
+* **Shift (Tahan)** - Berlari
+
+---
+
+## 📦 Penginstalan & Persiapan Aset
+
+Proyek ini menggunakan beberapa aset pihak ketiga untuk lingkungan dan karakter yang dapat Anda lihat daftarnya di file [assets.md](assets.md). 
+
+Untuk menjalankan proyek ini di Unity Editor secara utuh:
+1. Clone repositori ini ke komputer Anda.
+2. Unduh aset yang terdaftar di `assets.md`.
+3. Masukkan atau impor semua aset tersebut ke dalam folder **`Assets/AssetsOnline/`** di dalam proyek Unity Anda untuk menghindari *error missing prefab*.
+4. Buka proyek menggunakan Unity Hub dan load scene utama di folder `Scenes`.
