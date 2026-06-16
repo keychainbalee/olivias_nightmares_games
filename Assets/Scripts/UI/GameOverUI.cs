@@ -3,9 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
-    public void RestartGame()
+    public void RestartGame(string sceneName)
     {
-        SceneManager.LoadScene("FPS1");
+        SceneManager.LoadScene(sceneName);
     }
 
     public void QuitGame()
