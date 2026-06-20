@@ -14,7 +14,7 @@ Berikut adalah daftar aset 3D dan paket eksternal yang digunakan dalam proyek ga
 * **Furniture Pack 1:** [Unity Asset Store - Old Lowpoly Premium Furniture](https://assetstore.unity.com/packages/3d/environments/historic/old-lowpoly-premium-furniture-283804)
 * **Furniture Pack 2 \& Engine:** [Unity Asset Store - FPS Horror Game Starter Pack](https://assetstore.unity.com/packages/templates/packs/fps-horror-game-starter-pack-310075)
 
-### 3\. UI / Canvas (Unity Asset Store)
+### 3\. UI / Canvas 
 
 * **Bloodline Dark UI:** [Bloodline Dark UI](https://assetstore.unity.com/packages/2d/gui/bloodlines-dark-ui-328721)
 
