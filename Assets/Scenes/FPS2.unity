@@ -3539,7 +3539,7 @@ MonoBehaviour:
   nightPanel: {fileID: 1178046079}
   nightTextGroup: {fileID: 1576853908}
   nightTitle: {fileID: 1291643566}
-  nightName: MALAM 1
+  nightName: MALAM 2
   displayTime: 2.5
   fadeDuration: 1.5
   typingSpeed: 0.15
@@ -12286,7 +12286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23bdbaec6c3ac284ca3059bb4a376090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelComplete
-  currentLevel: 1
+  currentLevel: 2
   nextScene: EndingScene
 --- !u!1 &1773354350
 GameObject:

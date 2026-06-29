@@ -1,9 +1,12 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ExitDoor : MonoBehaviour, IInteractable
 {
+    [Header("Door")]
     [SerializeField] private string requiredKey;
+
+    [Header("Level Complete")]
+    [SerializeField] private LevelComplete levelComplete;
 
     private InventorySystem inventory;
 
@@ -34,6 +37,13 @@ public class ExitDoor : MonoBehaviour, IInteractable
 
     private void WinGame()
     {
-        SceneManager.LoadScene("EndingScene");
+        if (levelComplete != null)
+        {
+            levelComplete.CompleteLevel();
+        }
+        else
+        {
+            Debug.LogWarning("LevelComplete belum di-assign.");
+        }
     }
 }
