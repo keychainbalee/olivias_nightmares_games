@@ -7,51 +7,53 @@ public class DoorController : MonoBehaviour, IInteractable
 
     [SerializeField] private bool isLocked = true;
 
-    [SerializeField] private bool isOpen;
+    [SerializeField] private bool isOpen = false;
 
     [SerializeField] private float openAngle = 90f;
 
     [SerializeField] private float openSpeed = 3f;
+
+    [Tooltip("Centang jika pintu membuka ke kanan")]
+    [SerializeField] private bool openToRight = true;
 
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
     private InventorySystem inventory;
 
+    public bool IsOpen => isOpen;
+
     private void Start()
     {
-        inventory =
-            FindFirstObjectByType<InventorySystem>();
+        inventory = FindFirstObjectByType<InventorySystem>();
 
-        closedRotation = transform.rotation;
+        // Simpan rotasi awal PivotDoor
+        closedRotation = transform.localRotation;
 
-        openRotation =
-            Quaternion.Euler(
-                transform.eulerAngles +
-                new Vector3(0, -openAngle, 0)
-            );
+        float angle = openToRight ? openAngle : -openAngle;
+
+        // Rotasi tujuan
+        openRotation = closedRotation * Quaternion.Euler(0, angle, 0);
     }
 
     private void Update()
     {
-        Quaternion targetRotation =
-            isOpen ? openRotation : closedRotation;
+        Quaternion targetRotation = isOpen ? openRotation : closedRotation;
 
-        transform.rotation =
-            Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                openSpeed * Time.deltaTime
-            );
+        transform.localRotation = Quaternion.Slerp(
+            transform.localRotation,
+            targetRotation,
+            openSpeed * Time.deltaTime
+        );
     }
 
     public void Interact()
     {
         if (isLocked)
         {
-            if (inventory.HasKey(requiredKey))
+            if (inventory != null && inventory.HasKey(requiredKey))
             {
-                OpenDoor();
+                UnlockDoor();
             }
             else
             {
@@ -71,10 +73,9 @@ public class DoorController : MonoBehaviour, IInteractable
         }
     }
 
-    private void OpenDoor()
+    private void UnlockDoor()
     {
         isLocked = false;
-
         ToggleDoor();
     }
 
