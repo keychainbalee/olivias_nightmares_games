@@ -1,37 +1,67 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventorySwitcher : MonoBehaviour
 {
-    [Header("Inventory Slots")]
+    [Header("Inventory Objects")]
     [SerializeField] private GameObject flashlightObject;
-
     [SerializeField] private GameObject keyObject;
 
-    private int currentSlot;
+    [Header("UI Buttons")]
+    [SerializeField] private Button handButton;
+    [SerializeField] private Button flashlightButton;
+    [SerializeField] private Button keyButton;
+    [SerializeField] private Button flashlightPowerButton;
+
     private InventorySystem inventory;
+
+    private int currentSlot;
 
     private void Start()
     {
-        SelectSlot(0);
         inventory = FindFirstObjectByType<InventorySystem>();
+
+        SelectSlot(0);
+
+        RefreshUI();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SelectSlot(0);
-        }
+        RefreshUI();
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SelectSlot(1);
-        }
+    private void RefreshUI()
+    {
+        flashlightButton.gameObject.SetActive(
+            inventory.HasFlashlight());
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SelectSlot(2);
-        }
+        keyButton.gameObject.SetActive(
+            inventory.HasAnyKey());
+
+        flashlightPowerButton.gameObject.SetActive(
+            inventory.HasFlashlight() && currentSlot == 1);
+    }
+
+    public void SelectHand()
+    {
+        SelectSlot(0);
+    }
+
+    public void SelectFlashlight()
+    {
+        if (!inventory.HasFlashlight())
+            return;
+
+        SelectSlot(1);
+    }
+
+    public void SelectKey()
+    {
+        if (!inventory.HasAnyKey())
+            return;
+
+        SelectSlot(2);
     }
 
     private void SelectSlot(int slot)
@@ -43,26 +73,24 @@ public class InventorySwitcher : MonoBehaviour
 
         switch (currentSlot)
         {
-            case 0:
-                break;
-
             case 1:
 
-                if (inventory.HasFlashlight())
-                {
-                    flashlightObject.SetActive(true);
-                }
+                flashlightObject.SetActive(true);
 
                 break;
 
             case 2:
 
-                if (inventory.HasAnyKey())
-                {
-                    keyObject.SetActive(true);
-                }
+                keyObject.SetActive(true);
 
                 break;
         }
+
+        RefreshUI();
+    }
+
+    public int GetCurrentSlot()
+    {
+        return currentSlot;
     }
 }

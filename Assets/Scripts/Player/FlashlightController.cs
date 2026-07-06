@@ -3,47 +3,25 @@ using UnityEngine;
 public class FlashlightController : MonoBehaviour
 {
     [SerializeField] private GameObject flashlight;
-
-    private PlayerInputActions inputActions;
+    [SerializeField] private InventorySwitcher switcher;
 
     private InventorySystem inventory;
 
     private bool isOn;
 
-    private void Awake()
-    {
-        inputActions = new PlayerInputActions();
-    }
-
     private void Start()
     {
-        inventory =
-            FindFirstObjectByType<InventorySystem>();
+        inventory = FindFirstObjectByType<InventorySystem>();
     }
 
-    private void OnEnable()
+    public void ToggleFlashlight()
     {
-        inputActions.Enable();
-    }
+        if (!inventory.HasFlashlight())
+            return;
 
-    private void OnDisable()
-    {
-        inputActions.Disable();
-    }
+        if (switcher.GetCurrentSlot() != 1)
+            return;
 
-    private void Update()
-    {
-        if (
-            inputActions.Player.Flashlight.triggered &&
-            inventory.HasFlashlight()
-        )
-        {
-            ToggleFlashlight();
-        }
-    }
-
-    private void ToggleFlashlight()
-    {
         isOn = !isOn;
 
         flashlight.SetActive(isOn);
