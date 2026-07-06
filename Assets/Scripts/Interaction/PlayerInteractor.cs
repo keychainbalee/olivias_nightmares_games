@@ -1,66 +1,105 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteractor : MonoBehaviour
 {
-    [Header("Interaction")]
-    [SerializeField] private float interactDistance = 3f;
-
+    [Header("Detection")]
+    [SerializeField] private Transform detectionPoint;
+    [SerializeField] private float detectionRadius = 2f;
     [SerializeField] private LayerMask interactLayer;
 
-    private Camera playerCamera;
+    [Header("UI")]
+    [SerializeField] private Button interactButton;
+    [SerializeField] private TMP_Text interactText;
 
-    private PlayerInputActions inputActions;
+    private IInteractable currentInteractable;
 
-    private void Awake()
+    private void Start()
     {
-        playerCamera =
-            GetComponentInChildren<Camera>();
+        interactButton.gameObject.SetActive(false);
 
-        inputActions = new PlayerInputActions();
-    }
-
-    private void OnEnable()
-    {
-        inputActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.Disable();
     }
 
     private void Update()
     {
-        if (inputActions.Player.Interact.triggered)
-        {
-            TryInteract();
-        }
+        DetectInteractable();
     }
 
-    private void TryInteract()
+    private void DetectInteractable()
     {
-        Ray ray =
-            new Ray(
-                playerCamera.transform.position,
-                playerCamera.transform.forward
-            );
+        currentInteractable = null;
 
-        if (
-            Physics.Raycast(
-                ray,
-                out RaycastHit hit,
-                interactDistance,
-                interactLayer
-            )
-        )
+        Collider[] hits = Physics.OverlapSphere(
+            detectionPoint.position,
+            detectionRadius,
+            interactLayer
+        );
+
+        foreach (Collider hit in hits)
         {
+
             IInteractable interactable =
-                hit.collider.GetComponentInParent<IInteractable>();
+                hit.GetComponentInParent<IInteractable>();
+
 
             if (interactable != null)
             {
-                interactable.Interact();
+                currentInteractable = interactable;
+
+                interactButton.gameObject.SetActive(true);
+                interactText.text = GetInteractionText(hit);
+
+                return;
             }
         }
+
+        interactButton.gameObject.SetActive(false);
+    }
+
+    public void Interact()
+    {
+        Debug.Log("Button ditekan");
+
+        if (currentInteractable == null)
+        {
+            Debug.Log("currentInteractable NULL");
+            return;
+        }
+
+        Debug.Log("Interact dengan : " + currentInteractable.GetType().Name);
+
+        currentInteractable.Interact();
+    }
+
+    private string GetInteractionText(Collider hit)
+    {
+        switch (hit.tag)
+        {
+            case "Flashlight":
+                return "Ambil Senter";
+
+            case "Key":
+                return "Ambil Kunci";
+
+            case "Door":
+                return "Buka Pintu";
+
+            default:
+                return "Interaksi";
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (detectionPoint == null)
+            return;
+
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawWireSphere(
+            detectionPoint.position,
+            detectionRadius
+        );
     }
 }

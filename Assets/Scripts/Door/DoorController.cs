@@ -2,58 +2,68 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour, IInteractable
 {
-    [Header("Door Settings")]
-    [SerializeField] private string requiredKey;
+    [Header("Key")]
+    [SerializeField] private string requiredKey = "ExitKey";
 
+    [Header("Door")]
     [SerializeField] private bool isLocked = true;
 
+    [Tooltip("Centang saat Play Mode untuk membuka pintu.")]
     [SerializeField] private bool isOpen = false;
 
     [SerializeField] private float openAngle = 90f;
+    [SerializeField] private float openSpeed = 180f;
 
-    [SerializeField] private float openSpeed = 3f;
-
-    [Tooltip("Centang jika pintu membuka ke kanan")]
     [SerializeField] private bool openToRight = true;
 
     private Quaternion closedRotation;
-    private Quaternion openRotation;
+    private Quaternion openedRotation;
+    private int interactCount = 0;
 
     private InventorySystem inventory;
 
-    public bool IsOpen => isOpen;
+    private void Awake()
+    {
+        inventory = FindFirstObjectByType<InventorySystem>();
+    }
 
     private void Start()
     {
-        inventory = FindFirstObjectByType<InventorySystem>();
-
-        // Simpan rotasi awal PivotDoor
         closedRotation = transform.localRotation;
 
         float angle = openToRight ? openAngle : -openAngle;
 
-        // Rotasi tujuan
-        openRotation = closedRotation * Quaternion.Euler(0, angle, 0);
+        openedRotation =
+            Quaternion.Euler(
+                closedRotation.eulerAngles.x,
+                closedRotation.eulerAngles.y + angle,
+                closedRotation.eulerAngles.z
+            );
     }
 
     private void Update()
     {
-        Quaternion targetRotation = isOpen ? openRotation : closedRotation;
+        Quaternion target = isOpen ? openedRotation : closedRotation;
 
-        transform.localRotation = Quaternion.Slerp(
+        transform.localRotation = Quaternion.RotateTowards(
             transform.localRotation,
-            targetRotation,
+            target,
             openSpeed * Time.deltaTime
         );
     }
 
     public void Interact()
     {
+        interactCount++;
+
         if (isLocked)
         {
             if (inventory != null && inventory.HasKey(requiredKey))
             {
-                UnlockDoor();
+                isLocked = false;
+                isOpen = true;
+
+                Debug.Log("Door Unlocked");
             }
             else
             {
@@ -61,26 +71,25 @@ public class DoorController : MonoBehaviour, IInteractable
                 {
                     DoorUI.Instance.ShowLockedMessage();
                 }
-                else
-                {
-                    Debug.Log("Door Locked");
-                }
+
+                return;
             }
         }
         else
         {
-            ToggleDoor();
+            isOpen = !isOpen;
         }
     }
 
-    private void UnlockDoor()
+    [ContextMenu("Open Door")]
+    private void OpenDoor()
     {
-        isLocked = false;
-        ToggleDoor();
+        isOpen = true;
     }
 
-    private void ToggleDoor()
+    [ContextMenu("Close Door")]
+    private void CloseDoor()
     {
-        isOpen = !isOpen;
+        isOpen = false;
     }
 }
