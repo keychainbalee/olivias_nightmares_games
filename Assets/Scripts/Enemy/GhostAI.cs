@@ -75,8 +75,7 @@ public class GhostAI : MonoBehaviour
             GoToNextPoint();
         }
 
-        if (!agent.pathPending &&
-            agent.remainingDistance < 0.5f)
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             GoToNextPoint();
         }
