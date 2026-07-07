@@ -1,29 +1,76 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlashlightController : MonoBehaviour
 {
-    [SerializeField] private GameObject flashlight;
-    [SerializeField] private InventorySwitcher switcher;
+    [Header("Flashlight")]
+    [SerializeField] private GameObject flashlightLight;
 
-    private InventorySystem inventory;
+    [Header("Dependencies")]
+    [SerializeField] private InventorySystem inventory;
+    [SerializeField] private InventorySwitcher inventorySwitcher;
 
-    private bool isOn;
+    [Header("UI")]
+    [SerializeField] private Button powerButton;
+    [SerializeField] private Sprite powerOnSprite;
+    [SerializeField] private Sprite powerOffSprite;
+
+    private Image buttonImage;
+
+    private void Awake()
+    {
+        buttonImage = powerButton.GetComponent<Image>();
+
+        if (inventory == null)
+            inventory = FindFirstObjectByType<InventorySystem>();
+    }
 
     private void Start()
     {
-        inventory = FindFirstObjectByType<InventorySystem>();
+        flashlightLight.SetActive(false);
+
+        UpdateButtonIcon();
     }
 
     public void ToggleFlashlight()
     {
+        // Belum memiliki senter
         if (!inventory.HasFlashlight())
             return;
 
-        if (switcher.GetCurrentSlot() != 1)
+        // Slot aktif harus slot senter
+        if (inventorySwitcher.GetCurrentSlot() != 1)
             return;
 
-        isOn = !isOn;
+        bool newState = !flashlightLight.activeSelf;
 
-        flashlight.SetActive(isOn);
+        flashlightLight.SetActive(newState);
+
+        UpdateButtonIcon();
+
+        Debug.Log(newState ? "Flashlight ON" : "Flashlight OFF");
+    }
+
+    public void ForceTurnOff()
+    {
+        flashlightLight.SetActive(false);
+
+        UpdateButtonIcon();
+    }
+
+    public bool IsFlashlightOn()
+    {
+        return flashlightLight.activeSelf;
+    }
+
+    private void UpdateButtonIcon()
+    {
+        if (buttonImage == null)
+            return;
+
+        buttonImage.sprite =
+            flashlightLight.activeSelf ?
+            powerOnSprite :
+            powerOffSprite;
     }
 }
