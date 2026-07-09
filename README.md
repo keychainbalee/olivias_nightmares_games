@@ -22,11 +22,11 @@ Olivia terjebak di dalam labirin ingatan dan ketakutan terbesarnya. Rumah yang d
 ---
 
 ## 🧭 Kontrol Permainan (PC)
-* **W, A, S, D** - Bergerak / Berjalan
-* **Mouse** - Mengarahkan Pandangan (Kamera)
-* **F** - Menyalakan / Mematikan Senter
-* **E** - Interaksi (Membuka Pintu, Mengambil Kunci / Item)
-* **Shift (Tahan)** - Berlari
+* **Joystick** - Bergerak / Berjalan
+* **Right Look Area** - Mengarahkan Pandangan (Kamera)
+* **Power Flashlight** - Menyalakan / Mematikan Senter
+* **Tombol Interact** - Interaksi (Membuka Pintu, Mengambil Kunci / Item)
+* **Batas Joystick** - Berlari
 
 ---
 
