@@ -8,17 +8,20 @@ public class DoorController : MonoBehaviour, IInteractable
     [Header("Door")]
     [SerializeField] private bool isLocked = true;
 
-    [Tooltip("Centang saat Play Mode untuk membuka pintu.")]
+    [Tooltip("Status pintu saat Play Mode")]
     [SerializeField] private bool isOpen = false;
 
     [SerializeField] private float openAngle = 90f;
+
     [SerializeField] private float openSpeed = 180f;
 
     [SerializeField] private bool openToRight = true;
 
+    [Header("Audio")]
+    [SerializeField] private DoorAudio doorAudio;
+
     private Quaternion closedRotation;
     private Quaternion openedRotation;
-    private int interactCount = 0;
 
     private InventorySystem inventory;
 
@@ -33,52 +36,51 @@ public class DoorController : MonoBehaviour, IInteractable
 
         float angle = openToRight ? openAngle : -openAngle;
 
-        openedRotation =
-            Quaternion.Euler(
-                closedRotation.eulerAngles.x,
-                closedRotation.eulerAngles.y + angle,
-                closedRotation.eulerAngles.z
-            );
+        openedRotation = Quaternion.Euler(
+            closedRotation.eulerAngles.x,
+            closedRotation.eulerAngles.y + angle,
+            closedRotation.eulerAngles.z
+        );
     }
 
     private void Update()
     {
-        Quaternion target = isOpen ? openedRotation : closedRotation;
+        Quaternion targetRotation =
+            isOpen ? openedRotation : closedRotation;
 
-        transform.localRotation = Quaternion.RotateTowards(
-            transform.localRotation,
-            target,
-            openSpeed * Time.deltaTime
-        );
+        transform.localRotation =
+            Quaternion.RotateTowards(
+                transform.localRotation,
+                targetRotation,
+                openSpeed * Time.deltaTime
+            );
     }
 
     public void Interact()
     {
-        interactCount++;
-
+        // Jika pintu masih terkunci
         if (isLocked)
         {
-            if (inventory != null && inventory.HasKey(requiredKey))
+            // Belum memiliki kunci
+            if (inventory == null || !inventory.HasKey(requiredKey))
             {
-                isLocked = false;
-                isOpen = true;
-
-                Debug.Log("Door Unlocked");
-            }
-            else
-            {
-                if (DoorUI.Instance != null)
-                {
-                    DoorUI.Instance.ShowLockedMessage();
-                }
-
+                DoorUI.Instance?.ShowLockedMessage();
                 return;
             }
+
+            // Memiliki kunci
+            isLocked = false;
+            isOpen = true;
+
+            doorAudio?.PlayDoorSound();
+
+            return;
         }
-        else
-        {
-            isOpen = !isOpen;
-        }
+
+        // Toggle pintu
+        isOpen = !isOpen;
+
+        doorAudio?.PlayDoorSound();
     }
 
     [ContextMenu("Open Door")]

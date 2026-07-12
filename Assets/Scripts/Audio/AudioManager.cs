@@ -1,11 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
+    [Header("Volume")]
     [Range(0f, 1f)]
-    public float musicVolume = 1f;
+    [SerializeField] private float musicVolume = 1f;
+
+    [Range(0f, 1f)]
+    [SerializeField] private float sfxVolume = 1f;
+
+    public float MusicVolume => musicVolume;
+    public float SFXVolume => sfxVolume;
 
     private void Awake()
     {
@@ -15,12 +23,7 @@ public class AudioManager : MonoBehaviour
 
             DontDestroyOnLoad(gameObject);
 
-            musicVolume =
-                PlayerPrefs.GetFloat(
-                    "MusicVolume",
-                    1f);
-
-            AudioListener.volume = musicVolume;
+            LoadVolume();
         }
         else
         {
@@ -28,19 +31,87 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        RefreshAudioSources();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        RefreshAudioSources();
+    }
+
+    private void RefreshAudioSources()
+    {
+        // MUSIC
+        GameObject[] musicObjects =
+        GameObject.FindGameObjectsWithTag("Music");
+
+        Debug.Log("Music Found : " + musicObjects.Length);
+
+        foreach (GameObject obj in musicObjects)
+        {
+            AudioSource source = obj.GetComponent<AudioSource>();
+
+            if (source != null)
+            {
+                source.volume = musicVolume;
+
+                Debug.Log(obj.name + " -> " + source.volume);
+            }
+        }
+
+
+        // SFX
+        GameObject[] sfxObjects =
+            GameObject.FindGameObjectsWithTag("SFX");
+
+        foreach (GameObject obj in sfxObjects)
+        {
+            AudioSource source = obj.GetComponent<AudioSource>();
+
+            if (source != null)
+            {
+                source.volume = sfxVolume;
+            }
+        }
+    }
+
+    public void SetMusicVolume(float volume)
     {
         musicVolume = volume;
 
-        AudioListener.volume = volume;
+        RefreshAudioSources();
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        sfxVolume = volume;
+
+        RefreshAudioSources();
     }
 
     public void SaveVolume()
     {
-        PlayerPrefs.SetFloat(
-            "MusicVolume",
-            musicVolume);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
 
         PlayerPrefs.Save();
+    }
+
+    private void LoadVolume()
+    {
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        sfxVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
     }
 }

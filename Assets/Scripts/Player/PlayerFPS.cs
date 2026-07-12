@@ -124,4 +124,13 @@ public class PlayerFPS : MonoBehaviour
         controller.height =
             isCrouching ? crouchHeight : standingHeight;
     }
+    public bool IsMoving()
+    {
+        return moveInput.sqrMagnitude > 0.1f;
+    }
+
+    public bool IsRunning()
+    {
+        return isSprinting && staminaSystem.CanSprint();
+    }
 }

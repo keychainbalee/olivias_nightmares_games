@@ -24,6 +24,8 @@ public class GhostAI : MonoBehaviour
 
     private bool isChasing;
 
+    public bool IsChasing => isChasing;
+
     private GhostJumpscare jumpscare;
 
     private void Awake()

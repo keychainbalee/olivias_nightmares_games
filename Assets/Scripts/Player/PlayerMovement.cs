@@ -28,6 +28,15 @@ public class PlayerMovement : MonoBehaviour
         staminaSystem = GetComponent<PlayerStamina>();
     }
 
+    private void Start()
+    {
+        lookSensitivity =
+            PlayerPrefs.GetFloat(
+                "LookSensitivity",
+                lookSensitivity
+            );
+    }
+
     private void Update()
     {
         HandleLook();
@@ -92,5 +101,25 @@ public class PlayerMovement : MonoBehaviour
             Quaternion.Euler(cameraRotationX, 0, 0);
 
         transform.Rotate(Vector3.up * mouseX);
+    }
+
+    //--------------------------------------------------
+    // Getter
+    //--------------------------------------------------
+
+    public bool IsMoving()
+    {
+        return moveInput.magnitude > 0.1f;
+    }
+
+    public bool IsRunning()
+    {
+        return moveInput.magnitude >= 0.7f &&
+               staminaSystem.CanSprint();
+    }
+
+    public void SetSensitivity(float sensitivity)
+    {
+        lookSensitivity = sensitivity;
     }
 }

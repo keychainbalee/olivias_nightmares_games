@@ -1,4 +1,4 @@
-# Olivia's Nightmares
+# Olivia's Nightmares V.1.1.0
 
 ![Unity Version](https://img.shields.io/badge/Unity-2022.3+-blue.svg)
 ![Platform](https://img.shields.io/badge/Platform-PC-orange.svg)

@@ -19,6 +19,14 @@ public class PlayerStamina : MonoBehaviour
 
     public float MaxStamina => maxStamina;
 
+    public float StaminaPercent
+    {
+        get
+        {
+            return currentStamina / maxStamina;
+        }
+    }
+
     private void Start()
     {
         currentStamina = maxStamina;
